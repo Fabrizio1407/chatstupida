@@ -10,15 +10,30 @@
         	 if(file_exists('chat.txt')){
                $lines = file('chat.txt');
         	 }
-             $log['state'] = count($lines); 
+				$username = $_POST['name'];
+				$usersFile = 'users.txt';
+				$file = file_get_contents($usersFile);
+				if (!strpos($file,$username)) 
+				fwrite(fopen($usersFile, 'a'), $username. "\n");
+				$usersList = [];
+				$users = file('users.txt');
+				foreach ($users as $user_num => $user) {
+					$usersList[] =  $user = str_replace("\n", "", $user);
+				}
+				$log['users'] = $usersList; 
+				$log['currentUser'] = $username; 
+            $log['state'] = count($lines); 
         	 break;	
     	
     	 case('update'):
         	$state = $_POST['state'];
+			// $users = file('users.txt');
         	if(file_exists('chat.txt')){
         	   $lines = file('chat.txt');
         	 }
         	 $count =  count($lines);
+	
+				
         	 if($state == $count){
         		 $log['state'] = $state;
         		 $log['text'] = false;
@@ -34,7 +49,8 @@
         				   }
          
                         }
-        			 $log['text'] = $text; 
+
+        			$log['text'] = $text; 
         		 }
         	  
              break;
@@ -62,15 +78,15 @@
 
 
 				  
-				  $usersFile = 'users.txt';
+			// 	  $usersFile = 'users.txt';
 		
-				  $file = file_get_contents($usersFile);
+			// 	  $file = file_get_contents($usersFile);
 				
-			 if (!strpos($file,$nickname)) 
-		  	   fwrite(fopen($usersFile, 'a'), $nickname.";". "\n");
+			//  if (!strpos($file,$nickname)) 
+		  	//    fwrite(fopen($usersFile, 'a'), $nickname.";". "\n");
 			
-	        $utenti=explode(";",$file);
-			$log['utenti']=$utenti;
+	      //   $utenti=explode(";",$file);
+			// $log['utenti']=$utenti;
 			   
 		 }
         	 break;
